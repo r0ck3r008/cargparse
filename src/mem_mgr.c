@@ -3,7 +3,9 @@
 #include<string.h>
 #include<unistd.h>
 
-void *alloc(char *type, int size, int flag)
+#include"mem_mgr.h"
+
+void *alloc(char *type, int size)
 {
 	void *ret=NULL;
 
@@ -16,13 +18,6 @@ void *alloc(char *type, int size, int flag)
 	{
 		ret=(struct arg *)malloc(sizeof(struct arg)*size);
 		explicit_bzero(ret, sizeof(struct arg)*size);
-		if(flag)
-		{
-			ret->s_name=(char *)alloc("char", 5, 0);
-			ret->l_name=(char *)alloc("char", 15, 0);
-			ret->help_msg=(char *)alloc("char", 50, 0);
-		}
-		ret->value=(char *)alloc("char", 10, 0);
 	}
 
 	if(ret==NULL)
@@ -34,31 +29,52 @@ void *alloc(char *type, int size, int flag)
 	return ret;
 }
 
-void dealloc(char *type, int size, void *buf, int flag)
+void dealloc(char *type, int size, void *buf)
 {
 	if(!strcmp(type, "char"))
 	{
 		explicit_bzero(buf, sizeof(char)*size);
 	}
-	else if(!strcmp(type, "char"))
+	else if(!strcmp(type, "struct arg"))
 	{
-		if(flag)
-		{
-			dealloc("char", 5, buf->s_name, 0);
-			dealloc("char", 15, buf->l_name, 0);
-			dealloc("char", 50, buf->help_msg, 0);
-		}
-		dealloc("char", 10, buf->value, 0);
 		explicit_bzero(buf, sizeof(struct arg)*size);
 	}
 	free(buf);
 }
 
+struct arg *init_arg_struct(int flag)
+{
+	struct arg *ret=(struct arg *)alloc("struct arg", 1);
+
+	if(flag)
+	{
+		ret->help_msg=(char *)alloc("char", 50);
+	}
+	ret->s_name=(char *)alloc("char", 5);
+	ret->l_name=(char *)alloc("char", 15);
+	ret->value=(char *)alloc("char", 10);
+
+	return ret;
+}
+
+void deinit_arg_struct(struct arg *buf, int flag)
+{
+	if(flag)
+	{
+		dealloc("char", 50, buf->help_msg);
+	}
+
+	dealloc("char", 5, buf->s_name);
+	dealloc("char", 15, buf->l_name);
+	dealloc("char", 10, buf->value);
+	dealloc("struct arg", 1, buf);
+}
+
 void alloc_start_node(struct arg *start)
 {
-	start=(struct arg *)alloc("struct arg", 1, 0);
-	start->s_name=NULL;
-	start->l_name=NULL;
+	start=init_arg_struct(0);
+	sprintf(start->s_name, "-h");
+	sprintf(start->l_name, "--help");
 	start->help_msg=NULL;
 	sprintf(start->value, "INIT");
 	start->req=-1;
@@ -98,24 +114,8 @@ void del_list(struct arg *start)
 			//not last node
 			curr->nxt->prev=start;
 		}
-		dealloc("struct arg", 1, curr, 1);
+		deinit_arg_struct(curr, 1);
 	}
-	dealloc("struct arg", 1, start, 0);
+	deinit_arg_struct(start, 0);
 	printf("[!]Successful deallocation of the chain!\n");
-}
-
-int count_req(struct arg *start)
-{
-	struct arg *curr=start->nxt;
-	int count=0;
-
-	for(curr; curr->nxt!=NULL; curr=curr->nxt)
-	{
-		if(curr->req)
-		{
-			count++;
-		}
-	}
-
-	return count;
 }
