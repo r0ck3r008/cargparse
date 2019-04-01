@@ -3,6 +3,7 @@
 #include<string.h>
 #include<unistd.h>
 
+#include"cargparse.h"
 #include"mem_mgr.h"
 #include"utils.h"
 
@@ -28,7 +29,7 @@ void show_help(struct arg *start)
 	dealloc("char", 15, req);
 }
 
-int add_argument(struct arg *start, char *s_name, char *l_name, char *help_msg, int req)
+void add_argument(struct arg *start, char *s_name, char *l_name, char *help_msg, int req)
 {
 	struct arg *node=init_arg_struct(1);
 
