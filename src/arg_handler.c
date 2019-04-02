@@ -7,12 +7,19 @@
 #include"mem_mgr.h"
 #include"utils.h"
 
+struct arg *init_lib()
+{
+	printf("[!]Starting cargparse library...\n");
+	struct arg *start=alloc_start_node();
+	return start;
+}
+
 void show_help(struct arg *start)
 {
 	printf("[!]Usage:\n");
 	struct arg *curr=start->nxt;
 	char *req=(char *)alloc("char", 15);
-	for(curr; curr==NULL; curr=curr->nxt)
+	for(curr; curr!=NULL; curr=curr->nxt)
 	{
 		explicit_bzero(req, sizeof(char)*15);
 		if(curr->req)
@@ -27,6 +34,7 @@ void show_help(struct arg *start)
 	}
 
 	dealloc("char", 15, req);
+	clean(start);
 }
 
 void add_argument(struct arg *start, char *s_name, char *l_name, char *help_msg, int req)
@@ -39,32 +47,45 @@ void add_argument(struct arg *start, char *s_name, char *l_name, char *help_msg,
 	node->req=req;
 
 	add_node(node, start);
-
-	printf("[!]Node successfully added!!\n");
 }
 
 void parse_args(struct arg *start, int argc, char **argv)
 {
 	//show help if arguments dont match
 	int req_args=count_req(start);
-	if((argc-1)%2<req_args)
-	{
-		fprintf(stderr, "[-]Insufficient nummber of arguments\n");
-		show_help(start);
-		_exit(-1);
-	}
+	int arg_grps=(argc-1)/2;
 
 	int flag=0;
-	for(int i=1; i<(argc-1)%2; i=i+2)
+	for(int i=0; i/2<arg_grps; i=i+2)
 	{
-		//parse arguments
-		if(find_node_match(argv[i], argv[i+1], start))
+		int ret=find_node_match(argv[i+1], argv[i+2], start);
+		
+		switch(ret)
 		{
-			printf("[!]%s no match found!!", argv[i]);
+			case 0:
+				{
+					fprintf(stderr, "[-]No match for argument {%s}\n", argv[i+1]);
+					show_help(start);
+					//exit stratergy
+					i=arg_grps*2;
+					flag=1;
+					break;
+				}
+			case 2:
+				{
+					req_args--;
+				}
+		}
+
+		if((i/2==(arg_grps-1)) && req_args!=0)
+		{
+			fprintf(stderr, "[-]Insufficient number of required arguments!\n");
 			show_help(start);
+			//exit stratergy
 			flag=1;
 			break;
 		}
+
 	}
 	if(flag)
 	{
@@ -74,6 +95,7 @@ void parse_args(struct arg *start, int argc, char **argv)
 
 void clean(struct arg *start)
 {
+	printf("[!]Cleaning parser library now... ");
 	del_list(start);
-	printf("[!]Successfully cleaned the memory, now parser library exiting...\n");
+	printf("Done!\n");
 }
