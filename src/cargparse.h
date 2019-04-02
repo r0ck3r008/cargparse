@@ -11,6 +11,7 @@ struct arg
 	struct arg *nxt, *prev;
 };
 
+struct arg *init_lib();
 void show_help(struct arg *);
 void add_argument(struct arg *, char *, char *, char *, int);
 void parse_args(struct arg *, int, char **);
