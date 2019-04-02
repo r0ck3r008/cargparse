@@ -70,37 +70,33 @@ void deinit_arg_struct(struct arg *buf, int flag)
 	dealloc("struct arg", 1, buf);
 }
 
-void alloc_start_node(struct arg *start)
+struct arg *alloc_start_node()
 {
-	start=init_arg_struct(0);
+	//allocate mem
+	struct arg *start=init_arg_struct(0);
+
+	//initiate pointers
+	start->help_msg=NULL;
+	start->nxt=NULL;
+	start->prev=NULL;
+
+	//add values
 	sprintf(start->s_name, "-h");
 	sprintf(start->l_name, "--help");
-	start->help_msg=NULL;
 	sprintf(start->value, "INIT");
-	start->req=-1;
-	start->prev=NULL;
+	start->req=0;
+
+	//return
+	return start;
 }
 
-void add_node(struct arg *new, struct arg *start)
+void add_node(struct arg *node, struct arg *curr)
 {
-	static struct arg *curr;
-	struct arg *tmp=new;
-
-	if(start==NULL)
-	{
-		alloc_start_node(start);
-		start->nxt=tmp;
-		tmp->prev=start;
-		tmp->nxt=NULL;
-	}
-	else
-	{
-		curr->nxt=tmp;
-		tmp->prev=curr;
-		tmp->nxt=NULL;
-	}
-	curr=tmp;
-	printf("[!]Node with s_name %s successfully added\n", curr->s_name);
+	for(curr; curr->nxt!=NULL; curr=curr->nxt);
+	
+	curr->nxt=node;
+	node->prev=curr;
+	node->nxt=NULL;
 }
 
 void del_list(struct arg *start)
@@ -117,5 +113,4 @@ void del_list(struct arg *start)
 		deinit_arg_struct(curr, 1);
 	}
 	deinit_arg_struct(start, 0);
-	printf("[!]Successful deallocation of the chain!\n");
 }
