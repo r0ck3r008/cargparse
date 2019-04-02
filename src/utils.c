@@ -21,7 +21,7 @@ int count_req(struct arg *start)
 
 int find_node_match(char *argument, char *value, struct arg *start)
 {
-	int flag=1;
+	int flag=0;
 	struct arg *curr=start->nxt;
 
 	for(curr; curr!=NULL; curr=curr->nxt)
@@ -29,7 +29,14 @@ int find_node_match(char *argument, char *value, struct arg *start)
 		if(!strcmp(argument, curr->s_name) || !strcmp(argument, curr->l_name))
 		{
 			sprintf(curr->value, value);
-			flag=0;
+			if(curr->req)
+			{
+				flag=2;
+			}
+			else
+			{
+				flag=1;
+			}
 			break;
 		}
 	}
