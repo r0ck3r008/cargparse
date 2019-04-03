@@ -1,5 +1,5 @@
-#ifndef CARGPARSE_H
-#define CARGPARSE_H
+#ifndef GLOBAL_DEFS_H
+#define GLOBAL_DEFS_H
 
 struct arg
 {
