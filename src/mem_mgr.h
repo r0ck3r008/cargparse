@@ -1,7 +1,7 @@
 #ifndef MEM_MGR_H
 #define MEM_MGR_H
 
-#include"cargparse.h"
+#include"global_defs.h"
 
 void *alloc(char *, int);
 void dealloc(char *, int , void *);
