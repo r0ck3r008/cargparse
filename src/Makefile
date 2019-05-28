@@ -1,6 +1,6 @@
-ALL_OBJS= arg_handler.o mem_mgr.o utils.o
-LINKER_FLAGS= -shared -o
-COMPILER_FLAGS= -g -fpic -c
+ALL_OBJS := arg_handler.o mem_mgr.o utils.o
+LINKER_FLAGS := -shared -o
+COMPILER_FLAGS := -g -fpic -c
 
 all: libcargparse.so clean_objs
 
