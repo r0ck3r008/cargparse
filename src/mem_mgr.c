@@ -5,75 +5,67 @@
 
 #include"mem_mgr.h"
 
-void *alloc(char *type, int size)
+void *_alloc(char *type, int size)
 {
 	void *ret=NULL;
 
-	if(!strcmp(type, "char"))
-	{
+	if(!strcmp(type, "char")){
 		ret=malloc(sizeof(char)*size);
 		explicit_bzero(ret, sizeof(char)*size);
-	}
-	else if(!strcmp(type, "struct arg"))
-	{
+	}else if(!strcmp(type, "struct arg")){
 		ret=(struct arg *)malloc(sizeof(struct arg)*size);
 		explicit_bzero(ret, sizeof(struct arg)*size);
 	}
 
-	if(ret==NULL)
-	{
-		fprintf(stderr, "[-]Error in allocating %d bytes for %s type\n", size, type);
+	if(ret==NULL){
+		fprintf(stderr, "[-]Error in allocating %d bytes for %s type\n",
+			size, type);
 		_exit(-1);
 	}
 
 	return ret;
 }
 
-void dealloc(char *type, int size, void *buf)
+void _dealloc(char *type, int size, void *buf)
 {
-	if(!strcmp(type, "char"))
-	{
+	if(!strcmp(type, "char")){
 		explicit_bzero(buf, sizeof(char)*size);
-	}
-	else if(!strcmp(type, "struct arg"))
-	{
+	}else if(!strcmp(type, "struct arg")){
 		explicit_bzero(buf, sizeof(struct arg)*size);
 	}
 	free(buf);
 }
 
-struct arg *init_arg_struct(int flag)
+struct arg *_init_arg_struct(int flag)
 {
-	struct arg *ret=(struct arg *)alloc("struct arg", 1);
+	struct arg *ret=(struct arg *)_alloc("struct arg", 1);
 
-	if(flag)
-	{
-		ret->help_msg=(char *)alloc("char", 50);
+	if(flag){
+		ret->help_msg=(char *)_alloc("char", 50);
 	}
-	ret->s_name=(char *)alloc("char", 5);
-	ret->l_name=(char *)alloc("char", 15);
-	ret->value=(char *)alloc("char", 10);
+	ret->s_name=(char *)_alloc("char", 5);
+	ret->l_name=(char *)_alloc("char", 15);
+	ret->value=(char *)_alloc("char", 10);
 
 	return ret;
 }
 
-void deinit_arg_struct(struct arg *buf, int flag)
+void _deinit_arg_struct(struct arg *buf, int flag)
 {
-	if(flag)
-	{
-		dealloc("char", 50, buf->help_msg);
+	if(flag){
+		_dealloc("char", 50, buf->help_msg);
 	}
 
-	dealloc("char", 5, buf->s_name);
-	dealloc("char", 15, buf->l_name);
-	dealloc("char", 10, buf->value);
-	dealloc("struct arg", 1, buf);
+	_dealloc("char", 5, buf->s_name);
+	_dealloc("char", 15, buf->l_name);
+	_dealloc("char", 10, buf->value);
+	_dealloc("struct arg", 1, buf);
 }
 
-struct arg *alloc_start_node()
+struct arg *_alloc_start_node()
 {
 	//allocate mem
-	struct arg *start=init_arg_struct(0);
+	struct arg *start=_init_arg_struct(0);
 
 	//initiate pointers
 	start->help_msg=NULL;
@@ -90,27 +82,25 @@ struct arg *alloc_start_node()
 	return start;
 }
 
-void add_node(struct arg *node, struct arg *curr)
+void _add_node(struct arg *node, struct arg *curr)
 {
 	for(curr; curr->nxt!=NULL; curr=curr->nxt);
-	
+
 	curr->nxt=node;
 	node->prev=curr;
 	node->nxt=NULL;
 }
 
-void del_list(struct arg *start)
+void _del_list(struct arg *start)
 {
 	struct arg *curr=start->nxt;
-	for(curr; curr!=NULL; curr=curr->nxt)
-	{
+	for(curr; curr!=NULL; curr=curr->nxt){
 		curr->prev->nxt=curr->nxt;
-		if(curr->nxt!=NULL)
-		{
+		if(curr->nxt!=NULL){
 			//not last node
 			curr->nxt->prev=start;
 		}
-		deinit_arg_struct(curr, 1);
+		_deinit_arg_struct(curr, 1);
 	}
-	deinit_arg_struct(start, 0);
+	_deinit_arg_struct(start, 0);
 }

@@ -3,12 +3,12 @@
 
 #include"global_defs.h"
 
-void *alloc(char *, int);
-void dealloc(char *, int , void *);
-struct arg *init_arg_struct(int);
-void deinit_arg_struct(struct arg *, int);
-struct arg *alloc_start_node();
-void add_node(struct arg *, struct arg *);
-void del_list(struct arg *);
+void *_alloc(char *, int);
+void _dealloc(char *, int , void *);
+struct arg *_init_arg_struct(int);
+void _deinit_arg_struct(struct arg *, int);
+struct arg *_alloc_start_node();
+void _add_node(struct arg *, struct arg *);
+void _del_list(struct arg *);
 
 #endif

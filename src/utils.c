@@ -3,15 +3,13 @@
 
 #include"utils.h"
 
-int count_req(struct arg *start)
+int _count_req(struct arg *start)
 {
 	struct arg *curr=start->nxt;
 	int count=0;
 
-	for(curr; curr!=NULL; curr=curr->nxt)
-	{
-		if(curr->req)
-		{
+	for(curr; curr!=NULL; curr=curr->nxt){
+		if(curr->req){
 			count++;
 		}
 	}
@@ -19,22 +17,18 @@ int count_req(struct arg *start)
 	return count;
 }
 
-int find_node_match(char *argument, char *value, struct arg *start)
+int _find_node_match(char *argument, char *value, struct arg *start)
 {
 	int flag=0;
 	struct arg *curr=start->nxt;
 
-	for(curr; curr!=NULL; curr=curr->nxt)
-	{
-		if(!strcmp(argument, curr->s_name) || !strcmp(argument, curr->l_name))
-		{
+	for(curr; curr!=NULL; curr=curr->nxt){
+		if(!strcmp(argument, curr->s_name) || !strcmp(argument,
+								curr->l_name)){
 			sprintf(curr->value, value);
-			if(curr->req)
-			{
+			if(curr->req){
 				flag=2;
-			}
-			else
-			{
+			}else{
 				flag=1;
 			}
 			break;
