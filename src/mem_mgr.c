@@ -42,6 +42,7 @@ struct arg *_init_arg_struct(int flag)
 
 	if(flag){
 		ret->help_msg=(char *)_alloc("char", 50);
+		ret->name=(char *)_alloc("char", 15);
 	}
 	ret->s_name=(char *)_alloc("char", 5);
 	ret->l_name=(char *)_alloc("char", 15);
@@ -54,6 +55,7 @@ void _deinit_arg_struct(struct arg *buf, int flag)
 {
 	if(flag){
 		_dealloc("char", 50, buf->help_msg);
+		_dealloc("char", 15, buf->name);
 	}
 
 	_dealloc("char", 5, buf->s_name);
@@ -69,6 +71,7 @@ struct arg *_alloc_start_node()
 
 	//initiate pointers
 	start->help_msg=NULL;
+	start->name=NULL;
 	start->nxt=NULL;
 	start->prev=NULL;
 
