@@ -37,13 +37,14 @@ void show_help(struct arg *start)
 	clean(start);
 }
 
-void add_argument(struct arg *start, char *s_name, char *l_name, char *help_msg,
-			int req)
+void add_argument(struct arg *start, char *s_name, char *l_name,
+			char *name, char *help_msg, int req)
 {
 	struct arg *node=_init_arg_struct(1);
 
 	sprintf(node->s_name, "%s", s_name);
 	sprintf(node->l_name, "%s", l_name);
+	sprintf(node->name, "%s", name);
 	sprintf(node->help_msg, "%s", help_msg);
 	node->req=req;
 
@@ -86,6 +87,21 @@ void parse_args(struct arg *start, int argc, char **argv)
 	if(flag){
 		_exit(-1);
 	}
+}
+
+char *find_arg_val(struct arg *start, char *name)
+{
+	struct arg *curr=start->nxt;
+	char *ret=NULL;
+
+	for(curr; curr!=NULL; curr=curr->nxt){
+		if(!strcmp(curr->name, name)){
+			ret=curr->value;
+			break;
+		}
+	}
+
+	return ret;
 }
 
 void clean(struct arg *start)
