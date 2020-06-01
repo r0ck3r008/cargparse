@@ -7,4 +7,5 @@ example_bin: example/Makefile
 	make -C example
 
 clean:
-	make -C src clean
+	make -C src/ clean
+	make -C example/ clean
