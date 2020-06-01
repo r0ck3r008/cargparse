@@ -12,7 +12,7 @@ example_usage.o: example_usage.c
 	${COMPILER} ${COMPILER_FLAGS} example_usage.c
 
 clean_objs: ${ALL_OBJS}
-	rm ./example_usage.o
+	rm -f ./example_usage.o
 
 clean:
-	rm example_bin
+	rm -f example_bin
