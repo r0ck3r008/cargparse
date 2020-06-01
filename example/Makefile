@@ -1,6 +1,6 @@
 COMPILER := gcc
 COMPILER_FLAGS := -g -c
-LINKER_FLAGS := -Lcargparse/src -lcargparse -o
+LINKER_FLAGS := -Lcargparse -lcargparse -o
 ALL_OBJS := example_usage.o
 
 all: example_bin clean_objs
