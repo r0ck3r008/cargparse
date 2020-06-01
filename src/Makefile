@@ -17,7 +17,7 @@ utils.o: utils.c
 	gcc ${COMPILER_FLAGS} utils.c
 
 clean_objs:
-	rm ./*.o
+	rm -f ./*.o
 
 clean:
-	rm ./libcargparse.so
+	rm -f ./libcargparse.so
