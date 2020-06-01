@@ -9,3 +9,4 @@ example_bin: libcargparse.so example/Makefile
 clean:
 	make -C src/ clean
 	make -C example/ clean
+	rm -f ./libcargparse.so
