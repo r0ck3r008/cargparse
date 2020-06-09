@@ -50,21 +50,6 @@ void _dealloc(char *type, int size, void *buf)
 	free(buf);
 }
 
-struct arg *_init_arg_struct(int flag)
-{
-	struct arg *ret=(struct arg *)_alloc("struct arg", 1);
-
-	if(flag){
-		ret->help_msg=(char *)_alloc("char", 50);
-		ret->name=(char *)_alloc("char", 15);
-	}
-	ret->s_name=(char *)_alloc("char", 5);
-	ret->l_name=(char *)_alloc("char", 15);
-	ret->value=(char *)_alloc("char", 10);
-
-	return ret;
-}
-
 void _deinit_arg_struct(struct arg *buf, int flag)
 {
 	if(flag){
@@ -81,7 +66,7 @@ void _deinit_arg_struct(struct arg *buf, int flag)
 struct arg *_alloc_start_node()
 {
 	//allocate mem
-	struct arg *start=_init_arg_struct(0);
+	struct arg *start=_alloc("struct arg", 1);
 
 	//initiate pointers
 	start->help_msg=NULL;
