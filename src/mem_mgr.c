@@ -100,13 +100,10 @@ void _add_node(struct arg *node, struct arg *curr)
 void _del_list(struct arg *start)
 {
 	struct arg *curr=start->nxt;
-	for(curr; curr!=NULL; curr=curr->nxt){
-		curr->prev->nxt=curr->nxt;
-		if(curr->nxt!=NULL){
-			//not last node
-			curr->nxt->prev=start;
-		}
+	while(start->nxt!=NULL) {
+		start->nxt=curr->nxt;
 		_deinit_arg_struct(curr, 1);
+		curr=start->nxt;
 	}
 	_deinit_arg_struct(start, 0);
 }
