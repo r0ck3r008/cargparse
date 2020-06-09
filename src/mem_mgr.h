@@ -4,6 +4,7 @@
 #include"global_defs.h"
 
 void *_alloc(char *, int);
+char *_char_copy(char *);
 void _dealloc(char *, int , void *);
 struct arg *_init_arg_struct(int);
 void _deinit_arg_struct(struct arg *, int);

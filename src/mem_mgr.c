@@ -26,6 +26,17 @@ void *_alloc(char *type, int size)
 	return ret;
 }
 
+char *_char_copy(char *strin)
+{
+	if(strin==NULL)
+		return NULL;
+
+	char *str=_alloc("char", strlen(strin));
+	sprintf(str, "%s", strin);
+
+	return str;
+}
+
 void _dealloc(char *type, int size, void *buf)
 {
 	if(buf==NULL)
