@@ -28,6 +28,9 @@ void *_alloc(char *type, int size)
 
 void _dealloc(char *type, int size, void *buf)
 {
+	if(buf==NULL)
+		return;
+
 	if(!strcmp(type, "char")){
 		explicit_bzero(buf, sizeof(char)*size);
 	}else if(!strcmp(type, "struct arg")){
