@@ -27,7 +27,7 @@ void show_help(struct arg *start)
 		}
 		else
 		{
-			sprintf(req, "Not Required");
+			sprintf(req, "Optional");
 		}
 		printf("%s\t%s\t%s\t%s\n", curr->s_name,
 			curr->l_name, req, curr->help_msg);
