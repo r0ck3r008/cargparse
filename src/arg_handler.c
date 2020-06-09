@@ -40,13 +40,11 @@ void show_help(struct arg *start)
 void add_argument(struct arg *start, char *s_name, char *l_name,
 			char *name, char *help_msg, int req)
 {
-	struct arg *node=_init_arg_struct(1);
-
-	sprintf(node->s_name, "%s", s_name);
-	sprintf(node->l_name, "%s", l_name);
-	sprintf(node->name, "%s", name);
-	sprintf(node->help_msg, "%s", help_msg);
-	node->req=req;
+	struct arg *node=_alloc("struct arg", 1);
+	node->s_name=_char_copy(s_name);
+	node->l_name=_char_copy(l_name);
+	node->name=_char_copy(name);
+	node->help_msg=_char_copy(help_msg);
 
 	_add_node(node, start);
 }

@@ -90,9 +90,9 @@ struct arg *_alloc_start_node()
 	start->prev=NULL;
 
 	//add values
-	sprintf(start->s_name, "-h");
-	sprintf(start->l_name, "--help");
-	sprintf(start->value, "INIT");
+	start->s_name=_char_copy("-h");
+	start->l_name=_char_copy("--help");
+	start->value=_char_copy("INIT");
 	start->req=0;
 
 	//return
